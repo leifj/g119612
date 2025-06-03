@@ -14,7 +14,7 @@ help: ## help information about make commands
 
 .PHONY: build
 build:  ## build the library
-	CGO_ENABLED=0 go build ${LDFLAGS} -a $(MODULE)
+	CGO_ENABLED=0 go build ${LDFLAGS} -o etsi_ts -a cmd/etsi_ts/main.go
 
 .PHONY: clean
 clean: ## remove temporary files
