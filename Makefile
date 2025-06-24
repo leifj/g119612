@@ -27,6 +27,7 @@ clean: ## remove temporary files
 realclean: ## remove generated files - requires "make gen"
 	rm -f pkg/etsi119612/*.xsd.go
 
+# horrid
 .PHONY: gen
 gen: ## generate code from xsd
 	xgen -i xsd -o pkg/etsi119612 -l Go -p etsi119612
