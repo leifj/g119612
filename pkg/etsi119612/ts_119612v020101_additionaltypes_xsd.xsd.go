@@ -26,8 +26,8 @@ type TakenOverBy *TakenOverByType
 type TakenOverByType struct {
 	URI                   *NonEmptyMultiLangURIType `xml:"URI"`
 	TSPName               *InternationalNamesType   `xml:"TSPName"`
-	TslSchemeOperatorName *SchemeOperatorName       `xml:"tsl:SchemeOperatorName"`
-	TslSchemeTerritory    *SchemeTerritory          `xml:"tsl:SchemeTerritory"`
+	TslSchemeOperatorName *SchemeOperatorName       `xml:"SchemeOperatorName"`
+	TslSchemeTerritory    *SchemeTerritory          `xml:"SchemeTerritory"`
 	OtherQualifier        []*AnyType                `xml:"OtherQualifier,omitempty"`
 }
 

@@ -2,6 +2,8 @@ package etsi119612
 
 import (
 	"crypto/x509"
+	"encoding/base64"
+	"log"
 )
 
 type TSPServicePolicy struct {
@@ -27,16 +29,27 @@ var (
 	PolicyAll = NewTSPServicePolicy()
 )
 
-func (tsp *TSPType) withCertificates(cb func(string)) {
-	for _, svc := range tsp.TslTSPServices.TslTSPService {
+func (svc *TSPServiceType) withCertificates(cb func(*x509.Certificate)) {
+	if svc.TslServiceInformation.TslServiceDigitalIdentity != nil {
 		for _, id := range svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId {
 			if len(id.X509Certificate) > 0 {
-				cb(id.X509Certificate)
+				data, err := base64.StdEncoding.DecodeString(string(id.X509Certificate))
+				if err == nil {
+					cert, err := x509.ParseCertificate(data)
+					if err == nil {
+						log.Printf("[TSP %s] Parsing certificate\n", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"))
+						cb(cert)
+					} else {
+						log.Printf("[TSP: %s] Error parsing certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+					}
+				} else {
+					log.Printf("[TSP: %s] Error decoding certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+				}
 			}
 		}
 	}
 }
 
-func (*TSPType) Validate([]*x509.Certificate, *TSPServicePolicy) error {
+func (*TSPServiceType) Validate([]*x509.Certificate, *TSPServicePolicy) error {
 	return nil //TBD
 }

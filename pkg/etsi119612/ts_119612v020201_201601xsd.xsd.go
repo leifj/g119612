@@ -9,14 +9,14 @@ type InternationalNamesType struct {
 
 // MultiLangNormStringType ...
 type MultiLangNormStringType struct {
-	XmlLangAttr *Lang `xml:"xml:lang,attr"`
-	*NonEmptyNormalizedString
+	XmlLangAttr *Lang `xml:"lang,attr"`
+	*NonEmptyNormalizedString `xml:",chardata"`
 }
 
 // MultiLangStringType ...
 type MultiLangStringType struct {
-	XmlLangAttr *Lang `xml:"xml:lang,attr"`
-	*NonEmptyString
+	XmlLangAttr *Lang `xml:"lang,attr"`
+	*NonEmptyString `xml:",chardata"`
 }
 
 // NonEmptyString ...
@@ -27,8 +27,8 @@ type NonEmptyNormalizedString string
 
 // AddressType ...
 type AddressType struct {
-	TslPostalAddresses   *PostalAddressListType `xml:"tsl:PostalAddresses"`
-	TslElectronicAddress *ElectronicAddressType `xml:"tsl:ElectronicAddress"`
+	TslPostalAddresses   *PostalAddressListType `xml:"PostalAddresses"`
+	TslElectronicAddress *ElectronicAddressType `xml:"ElectronicAddress"`
 }
 
 // PostalAddresses ...
@@ -36,7 +36,7 @@ type PostalAddresses *PostalAddressListType
 
 // PostalAddressListType ...
 type PostalAddressListType struct {
-	TslPostalAddress []*PostalAddressType `xml:"tsl:PostalAddress"`
+	TslPostalAddress []*PostalAddressType `xml:"PostalAddress"`
 }
 
 // PostalAddress ...
@@ -44,7 +44,7 @@ type PostalAddress *PostalAddressType
 
 // PostalAddressType ...
 type PostalAddressType struct {
-	XmlLangAttr     *Lang  `xml:"xml:lang,attr"`
+	XmlLangAttr     *Lang  `xml:"lang,attr"`
 	StreetAddress   string `xml:"StreetAddress"`
 	Locality        string `xml:"Locality"`
 	StateOrProvince string `xml:"StateOrProvince,omitempty"`
@@ -71,7 +71,7 @@ type ExtensionType struct {
 
 // ExtensionsListType ...
 type ExtensionsListType struct {
-	TslExtension []*ExtensionType `xml:"tsl:Extension"`
+	TslExtension []*ExtensionType `xml:"Extension"`
 }
 
 // NonEmptyURIType ...
@@ -85,7 +85,7 @@ type AttributedNonEmptyURIType struct {
 
 // NonEmptyMultiLangURIType ...
 type NonEmptyMultiLangURIType struct {
-	XmlLangAttr *Lang  `xml:"xml:lang,attr"`
+	XmlLangAttr *Lang  `xml:"lang,attr"`
 	Value       string `xml:",chardata"`
 }
 
@@ -106,8 +106,8 @@ type TrustServiceStatusList *TrustStatusListType
 type TrustStatusListType struct {
 	TSLTagAttr                  string                        `xml:"TSLTag,attr"`
 	IdAttr                      string                        `xml:"Id,attr,omitempty"`
-	TslSchemeInformation        *TSLSchemeInformationType     `xml:"tsl:SchemeInformation"`
-	TslTrustServiceProviderList *TrustServiceProviderListType `xml:"tsl:TrustServiceProviderList,omitempty"`
+	TslSchemeInformation        *TSLSchemeInformationType     `xml:"SchemeInformation"`
+	TslTrustServiceProviderList *TrustServiceProviderListType `xml:"TrustServiceProviderList,omitempty"`
 	DsSignature                 *Signature                    `xml:"ds:Signature,omitempty"`
 }
 
@@ -116,7 +116,7 @@ type TrustServiceProviderList *TrustServiceProviderListType
 
 // TrustServiceProviderListType ...
 type TrustServiceProviderListType struct {
-	TslTrustServiceProvider []*TSPType `xml:"tsl:TrustServiceProvider"`
+	TslTrustServiceProvider []*TSPType `xml:"TrustServiceProvider"`
 }
 
 // SchemeInformation ...
@@ -126,20 +126,20 @@ type SchemeInformation *TSLSchemeInformationType
 type TSLSchemeInformationType struct {
 	TSLVersionIdentifier        int                           `xml:"TSLVersionIdentifier"`
 	TSLSequenceNumber           int                           `xml:"TSLSequenceNumber"`
-	TslTSLType                  string                        `xml:"tsl:TSLType"`
-	TslSchemeOperatorName       *InternationalNamesType       `xml:"tsl:SchemeOperatorName"`
+	TslTSLType                  string                        `xml:"TSLType"`
+	TslSchemeOperatorName       *InternationalNamesType       `xml:"SchemeOperatorName"`
 	SchemeOperatorAddress       *AddressType                  `xml:"SchemeOperatorAddress"`
-	TslSchemeName               *InternationalNamesType       `xml:"tsl:SchemeName"`
-	TslSchemeInformationURI     *NonEmptyMultiLangURIListType `xml:"tsl:SchemeInformationURI"`
+	TslSchemeName               *InternationalNamesType       `xml:"SchemeName"`
+	TslSchemeInformationURI     *NonEmptyMultiLangURIListType `xml:"SchemeInformationURI"`
 	StatusDeterminationApproach string                        `xml:"StatusDeterminationApproach"`
-	TslSchemeTypeCommunityRules *NonEmptyMultiLangURIListType `xml:"tsl:SchemeTypeCommunityRules,omitempty"`
-	TslSchemeTerritory          string                        `xml:"tsl:SchemeTerritory,omitempty"`
-	TslPolicyOrLegalNotice      *PolicyOrLegalnoticeType      `xml:"tsl:PolicyOrLegalNotice,omitempty"`
+	TslSchemeTypeCommunityRules *NonEmptyMultiLangURIListType `xml:"SchemeTypeCommunityRules,omitempty"`
+	TslSchemeTerritory          string                        `xml:"SchemeTerritory,omitempty"`
+	TslPolicyOrLegalNotice      *PolicyOrLegalnoticeType      `xml:"PolicyOrLegalNotice,omitempty"`
 	HistoricalInformationPeriod int                           `xml:"HistoricalInformationPeriod"`
-	TslPointersToOtherTSL       *OtherTSLPointersType         `xml:"tsl:PointersToOtherTSL,omitempty"`
+	TslPointersToOtherTSL       *OtherTSLPointersType         `xml:"PointersToOtherTSL,omitempty"`
 	ListIssueDateTime           string                        `xml:"ListIssueDateTime"`
-	TslNextUpdate               *NextUpdateType               `xml:"tsl:NextUpdate"`
-	TslDistributionPoints       *NonEmptyURIListType          `xml:"tsl:DistributionPoints,omitempty"`
+	TslNextUpdate               *NextUpdateType               `xml:"NextUpdate"`
+	TslDistributionPoints       *NonEmptyURIListType          `xml:"DistributionPoints,omitempty"`
 	SchemeExtensions            *ExtensionsListType           `xml:"SchemeExtensions,omitempty"`
 }
 
@@ -183,7 +183,7 @@ type PointersToOtherTSL *OtherTSLPointersType
 
 // OtherTSLPointersType ...
 type OtherTSLPointersType struct {
-	TslOtherTSLPointer []*OtherTSLPointerType `xml:"tsl:OtherTSLPointer"`
+	TslOtherTSLPointer []*OtherTSLPointerType `xml:"OtherTSLPointer"`
 }
 
 // OtherTSLPointer ...
@@ -191,9 +191,9 @@ type OtherTSLPointer *OtherTSLPointerType
 
 // OtherTSLPointerType ...
 type OtherTSLPointerType struct {
-	TslServiceDigitalIdentities *ServiceDigitalIdentityListType `xml:"tsl:ServiceDigitalIdentities,omitempty"`
+	TslServiceDigitalIdentities *ServiceDigitalIdentityListType `xml:"ServiceDigitalIdentities,omitempty"`
 	TSLLocation                 string                          `xml:"TSLLocation"`
-	TslAdditionalInformation    *AdditionalInformationType      `xml:"tsl:AdditionalInformation,omitempty"`
+	TslAdditionalInformation    *AdditionalInformationType      `xml:"AdditionalInformation,omitempty"`
 }
 
 // ServiceDigitalIdentities ...
@@ -201,7 +201,7 @@ type ServiceDigitalIdentities *ServiceDigitalIdentityListType
 
 // ServiceDigitalIdentityListType ...
 type ServiceDigitalIdentityListType struct {
-	TslServiceDigitalIdentity []*DigitalIdentityListType `xml:"tsl:ServiceDigitalIdentity"`
+	TslServiceDigitalIdentity []*DigitalIdentityListType `xml:"ServiceDigitalIdentity"`
 }
 
 // AdditionalInformation ...
@@ -221,8 +221,8 @@ type TrustServiceProvider *TSPType
 
 // TSPType ...
 type TSPType struct {
-	TslTSPInformation *TSPInformationType  `xml:"tsl:TSPInformation"`
-	TslTSPServices    *TSPServicesListType `xml:"tsl:TSPServices"`
+	TslTSPInformation *TSPInformationType  `xml:"TSPInformation"`
+	TslTSPServices    *TSPServicesListType `xml:"TSPServices"`
 }
 
 // TSPInformation ...
@@ -242,7 +242,7 @@ type TSPServices *TSPServicesListType
 
 // TSPServicesListType ...
 type TSPServicesListType struct {
-	TslTSPService []*TSPServiceType `xml:"tsl:TSPService"`
+	TslTSPService []*TSPServiceType `xml:"TSPService"`
 }
 
 // TSPService ...
@@ -250,8 +250,8 @@ type TSPService *TSPServiceType
 
 // TSPServiceType ...
 type TSPServiceType struct {
-	TslServiceInformation *TSPServiceInformationType `xml:"tsl:ServiceInformation"`
-	TslServiceHistory     *ServiceHistoryType        `xml:"tsl:ServiceHistory,omitempty"`
+	TslServiceInformation *TSPServiceInformationType `xml:"ServiceInformation"`
+	TslServiceHistory     *ServiceHistoryType        `xml:"ServiceHistory,omitempty"`
 }
 
 // ServiceInformation ...
@@ -259,13 +259,13 @@ type ServiceInformation *TSPServiceInformationType
 
 // TSPServiceInformationType ...
 type TSPServiceInformationType struct {
-	TslServiceTypeIdentifier     string                        `xml:"tsl:ServiceTypeIdentifier"`
+	TslServiceTypeIdentifier     string                        `xml:"ServiceTypeIdentifier"`
 	ServiceName                  *InternationalNamesType       `xml:"ServiceName"`
-	TslServiceDigitalIdentity    *DigitalIdentityListType      `xml:"tsl:ServiceDigitalIdentity"`
-	TslServiceStatus             string                        `xml:"tsl:ServiceStatus"`
+	TslServiceDigitalIdentity    *DigitalIdentityListType      `xml:"ServiceDigitalIdentity"`
+	TslServiceStatus             string                        `xml:"ServiceStatus"`
 	StatusStartingTime           string                        `xml:"StatusStartingTime"`
 	SchemeServiceDefinitionURI   *NonEmptyMultiLangURIListType `xml:"SchemeServiceDefinitionURI,omitempty"`
-	TslServiceSupplyPoints       *ServiceSupplyPointsType      `xml:"tsl:ServiceSupplyPoints,omitempty"`
+	TslServiceSupplyPoints       *ServiceSupplyPointsType      `xml:"ServiceSupplyPoints,omitempty"`
 	TSPServiceDefinitionURI      *NonEmptyMultiLangURIListType `xml:"TSPServiceDefinitionURI,omitempty"`
 	ServiceInformationExtensions *ExtensionsListType           `xml:"ServiceInformationExtensions,omitempty"`
 }
@@ -306,7 +306,7 @@ type ServiceHistory *ServiceHistoryType
 
 // ServiceHistoryType ...
 type ServiceHistoryType struct {
-	TslServiceHistoryInstance []*ServiceHistoryInstanceType `xml:"tsl:ServiceHistoryInstance,omitempty"`
+	TslServiceHistoryInstance []*ServiceHistoryInstanceType `xml:"ServiceHistoryInstance,omitempty"`
 }
 
 // ServiceHistoryInstance ...
@@ -314,10 +314,10 @@ type ServiceHistoryInstance *ServiceHistoryInstanceType
 
 // ServiceHistoryInstanceType ...
 type ServiceHistoryInstanceType struct {
-	TslServiceTypeIdentifier     string                   `xml:"tsl:ServiceTypeIdentifier"`
+	TslServiceTypeIdentifier     string                   `xml:"ServiceTypeIdentifier"`
 	ServiceName                  *InternationalNamesType  `xml:"ServiceName"`
-	TslServiceDigitalIdentity    *DigitalIdentityListType `xml:"tsl:ServiceDigitalIdentity"`
-	TslServiceStatus             string                   `xml:"tsl:ServiceStatus"`
+	TslServiceDigitalIdentity    *DigitalIdentityListType `xml:"ServiceDigitalIdentity"`
+	TslServiceStatus             string                   `xml:"ServiceStatus"`
 	StatusStartingTime           string                   `xml:"StatusStartingTime"`
 	ServiceInformationExtensions *ExtensionsListType      `xml:"ServiceInformationExtensions,omitempty"`
 }

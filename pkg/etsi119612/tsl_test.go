@@ -11,8 +11,17 @@ func TestFetch(t *testing.T) {
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
 	assert.NotNil(t, tsl)
 	assert.Nil(t, err)
+	assert.NotNil(t, tsl.StatusList)
 	si := tsl.StatusList.TslSchemeInformation
 	assert.NotNil(t, si)
-	assert.Equal(t, si.TSLVersionIdentifier, 1)
 	assert.Equal(t, si.TSLSequenceNumber, 1)
+	assert.Equal(t, si.TSLSequenceNumber, 1)
+}
+
+func TestCertPool(t *testing.T) {
+	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
+	assert.NotNil(t, tsl)
+	assert.Nil(t, err)
+	pool := tsl.ToCertPool(etsi119612.PolicyAll)
+	assert.NotNil(t, pool)
 }

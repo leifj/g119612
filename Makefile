@@ -13,7 +13,7 @@ help: ## help information about make commands
 
 .PHONY: test
 test:
-	go test ./pkg/etsi119612
+	go test -v ./pkg/etsi119612
 
 .PHONY: build
 build:  ## build the library
@@ -30,3 +30,8 @@ realclean: ## remove generated files - requires "make gen"
 .PHONY: gen
 gen: ## generate code from xsd
 	xgen -i xsd -o pkg/etsi119612 -l Go -p etsi119612
+	sed -i 's/xml:lang/lang/g' pkg/etsi119612/*.xsd.go
+	sed -i 's/tsl://g' pkg/etsi119612/*.xsd.go
+	sed -i 's/*NonEmptyNormalizedString/*NonEmptyNormalizedString `xml:",chardata"`/g' pkg/etsi119612/*.xsd.go
+	sed -i 's/*NonEmptyString/*NonEmptyString `xml:",chardata"`/g' pkg/etsi119612/*.xsd.go
+
