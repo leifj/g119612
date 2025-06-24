@@ -4,7 +4,7 @@ PACKAGES := $(shell go list ./... | grep -v /vendor/)
 LDFLAGS := -ldflags "-X main.Version=${VERSION}"
 
 .PHONY: default
-default: help
+default: build
 
 # generate help info from comments: thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
