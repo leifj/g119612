@@ -92,11 +92,11 @@ This is a review done in January 2016 adding the possibility to specify the Serv
 	<!-- -->
 	<!-- Types for extensions in TSL -->
 	<!-- -->
-	<xsd:complexType name="AnyType" mixed="true">
+	<!-- xsd:complexType name="AnyType" mixed="true">
 		<xsd:sequence minOccurs="0" maxOccurs="unbounded">
 			<xsd:any processContents="lax"/>
 		</xsd:sequence>
-	</xsd:complexType>
+	</xsd:complexType -->
 	<xsd:annotation><xsd:documentation>Specified in TS 119 612 v2.1.1 clause 5.3.17 Scheme extensions</xsd:documentation></xsd:annotation>
 	<xsd:element name="Extension" type="tsl:ExtensionType"/>
 	<xsd:complexType name="ExtensionType">

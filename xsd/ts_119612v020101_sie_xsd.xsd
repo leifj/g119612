@@ -53,9 +53,9 @@ then that text shall prevail as the authoritative source
 			<xsd:element name="Qualifier" type="tns:QualifierType"/>
 		</xsd:sequence>
 	</xsd:complexType>
-	<xsd:complexType name="QualifierType">
+	<!-- xsd:complexType name="QualifierType">
 		<xsd:attribute name="uri" type="anyURI"/>
-	</xsd:complexType>
+	</xsd:complexType -->
 	<xsd:annotation><xsd:documentation>Specified in TS 119 612 v2.1.1 clause 5.5.9.2.2.2 PolicySet</xsd:documentation></xsd:annotation>
 	<xsd:complexType name="PoliciesListType">
 		<xsd:sequence maxOccurs="unbounded">

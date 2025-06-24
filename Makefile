@@ -11,6 +11,9 @@ default: build
 help: ## help information about make commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: test
+test:
+	go test ./pkg/etsi119612
 
 .PHONY: build
 build:  ## build the library
@@ -18,8 +21,12 @@ build:  ## build the library
 
 .PHONY: clean
 clean: ## remove temporary files
+	go clean
+
+.PHONY: realclean
+realclean: ## remove generated files - requires "make gen"
+	rm -f pkg/etsi119612/*.xsd.go
 
 .PHONY: gen
 gen: ## generate code from xsd
-	mkdir -p pkg/etsi119612
 	xgen -i xsd -o pkg/etsi119612 -l Go -p etsi119612

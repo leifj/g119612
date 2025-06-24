@@ -1,66 +1,60 @@
 package etsi119612
 
 import (
-	"slices"
-	"github.com/subchen/go-xmldom"
- 	"net/http"
+	"bytes"
 	"crypto/x509"
 	"encoding/base64"
+	"encoding/xml"
+	"io"
+	"net/http"
 )
 
+type Lang string
+
 type TSL struct {
-        Doc *xmldom.Document
-        Source string
+	StatusList TrustServiceStatusList `xml:"TrustServiceStatusList"`
+	Source     string
 }
 
-func FetchTSL(url string) (*TSL,error) {
-        resp, err := http.Get(url)
-        if err != nil {
-                return nil, err
-        }
-        defer resp.Body.Close()
-        doc := xmldom.Must(xmldom.Parse(resp.Body))
-        t := TSL{Source: url}
-        t.Doc = doc
-        return &t,nil
+func StreamToByte(stream io.Reader) []byte {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(stream)
+	return buf.Bytes()
 }
 
-func (tsl *TSL) findTrustServiceProviderList() *xmldom.Node {
-	return tsl.Doc.Root.FindOneByName("TrustServiceProviderList")
+func FetchTSL(url string) (*TSL, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	bodyBytes := StreamToByte(resp.Body)
+	t := TSL{Source: url}
+
+	err = xml.Unmarshal(bodyBytes, &t)
+	if err != nil {
+		return nil, err
+	}
+
+	return &t, nil
 }
 
-func (tsl *TSL) withTSP(cb func (int, *xmldom.Node)) {
-	tsl.Doc.Root.QueryEach("//TrustServiceProvider",cb)
-}
-
-func (tsl *TSL) withTrustServices(cb func (int, *xmldom.Node)) {
-	tsl.Doc.Root.QueryEach("//TSPService", cb)
-}
-
-func (tsl *TSL) FindServicesBySKI(skiVal string) []*xmldom.Node {
-	nodes := make([]*xmldom.Node,0)
-	tsl.withTSP(func (i int, n *xmldom.Node) {
-		skis := n.FindByName("X509SKI")
-		idx := slices.IndexFunc(skis,func(ski *xmldom.Node) bool { return ski.Text == skiVal })
-		if (idx != -1) {
-			nodes = append(nodes,n)
-                }
-	})
-	return nodes
+func (tsl *TSL) withTrustServices(cb func(int, *TSPType)) {
+	for i, tsp := range tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider {
+		cb(i, tsp)
+	}
 }
 
 func (tsl *TSL) ToCertPool(policy *TSPServicePolicy) *x509.CertPool {
 	pool := x509.NewCertPool()
-	tsl.withTrustServices(func (i int, tspNode *xmldom.Node) {
-		certNodes := tspNode.FindByName("X509Certificate")
-		for _,n := range certNodes {
-			tsp := NewTSPService(tspNode)
-			data,err := base64.StdEncoding.DecodeString(n.Text)
-			if (err == nil) {
-				cert,err := x509.ParseCertificate(data)
-				if (err == nil) {
+	tsl.withTrustServices(func(i int, tsp *TSPType) {
+		tsp.withCertificates(func(certData string) {
+			data, err := base64.StdEncoding.DecodeString(certData)
+			if err == nil {
+				cert, err := x509.ParseCertificate(data)
+				if err == nil {
 					pool.AddCertWithConstraint(cert, func(chain []*x509.Certificate) error {
-						return tsp.Validate(chain,policy)
+						return tsp.Validate(chain, policy)
 					})
 				} else {
 					// TODO error logging
@@ -68,7 +62,7 @@ func (tsl *TSL) ToCertPool(policy *TSPServicePolicy) *x509.CertPool {
 			} else {
 				//TODO error logging
 			}
-		}
-	});
+		})
+	})
 	return pool
 }
