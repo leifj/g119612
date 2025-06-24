@@ -4,7 +4,7 @@ import (
 	"slices"
 	"github.com/subchen/go-xmldom"
  	"net/http"
-	"x509"
+	"crypto/x509"
 	"encoding/base64"
 )
 
@@ -49,17 +49,24 @@ func (tsl *TSL) FindServicesBySKI(skiVal string) []*xmldom.Node {
 	return nodes
 }
 
-func (tsl *TSL) ToCertPool() *CertPool {
-	pool := NewCertPool()
-	ts.withTrustServices(func (i int, tspNode *xmldom.Node) {
-		certNodes := tsp.FindByName("X509Certificate")
-		for i,n := range certNodes {
-			tsp := NewTSP(tspNode)
-			cert,err := ParseCertificate(base64.StdEncoding.DecodeString(n.Text))
+func (tsl *TSL) ToCertPool(policy *TSPServicePolicy) *x509.CertPool {
+	pool := x509.NewCertPool()
+	tsl.withTrustServices(func (i int, tspNode *xmldom.Node) {
+		certNodes := tspNode.FindByName("X509Certificate")
+		for _,n := range certNodes {
+			tsp := NewTSPService(tspNode)
+			data,err := base64.StdEncoding.DecodeString(n.Text)
 			if (err == nil) {
-				pool.AddCertificateWithConstraint(cert, func(chain []*Certificate) error {
-					return tsp.Validate(chain)
-				})
+				cert,err := x509.ParseCertificate(data)
+				if (err == nil) {
+					pool.AddCertWithConstraint(cert, func(chain []*x509.Certificate) error {
+						return tsp.Validate(chain,policy)
+					})
+				} else {
+					// TODO error logging
+				}
+			} else {
+				//TODO error logging
 			}
 		}
 	});
