@@ -10,14 +10,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-go@v5
-      with:
+    - with:
         go-version: ${{ matrix.go-version }}
-        - name: run tests
-          run: make test
-        - name: generate test coverage
-          run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
-        - name: check test coverage
-          uses: vladopajic/go-test-coverage@v2
-          with:
-             debug: true
-             config: ./.testcoverage.yml
+    - name: run tests
+        run: make test
+    - name: generate test coverage
+       run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+    - name: check test coverage
+       uses: vladopajic/go-test-coverage@v2
+       with:
+          debug: true
+          config: ./.testcoverage.yml
