@@ -7,6 +7,22 @@
 
 This is a golang library implementing ETSI trust status lists. The library is meant to be used primarily to create a certificate pool for validating X509 certificates. The library was created to cater to the evolving EUDI wallet ecosystem but other uses are possible. Feel free to drop a PR or an issue if you see something you would like to change.
 
+## Basic Usage
+
+```go
+    tsl, err := etsi119612.FetchTSL("https://example.com/some-tsl.xml")
+	if err != nil {
+		// do some error handling
+	}
+    // build a cert-pool from the trust status list with default validation policy
+	pool := tsl.ToCertPool(etsi119612.PolicyAll)
+    // cert is some X509 certificate
+    _, err = cert.Verify(x509.VerifyOptions{Roots: pool})
+    if err != nil {
+        //cert is INVALID
+    }
+```
+
 ## Trust List in Infrastructure: General Overview:
 
 Document for the reference:
