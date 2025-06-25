@@ -10,13 +10,16 @@ This is a golang library implementing ETSI trust status lists. The library is me
 ## Basic Usage
 
 ```go
+    // fetch and create a TSL object
     tsl, err := etsi119612.FetchTSL("https://example.com/some-tsl.xml")
-	if err != nil {
-		// do some error handling
-	}
+    if err != nil {
+	// do some error handling
+    }
+
     // build a cert-pool from the trust status list with default validation policy
-	pool := tsl.ToCertPool(etsi119612.PolicyAll)
-    // cert is some X509 certificate
+    pool := tsl.ToCertPool(etsi119612.PolicyAll)
+
+    // validate - cert is some X509 certificate
     _, err = cert.Verify(x509.VerifyOptions{Roots: pool})
     if err != nil {
         //cert is INVALID
