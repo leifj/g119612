@@ -1,6 +1,6 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/SUNET/g119612.svg)](https://pkg.go.dev/github.com/SUNET/g119612)
-[![Go Report Card](https://goreportcard.com/badge/github.com/leifj/g119612)](https://goreportcard.com/report/github.com/leifj/g119612)
+[![Go Report Card](https://goreportcard.com/badge/github.com/SUNET/g119612)](https://goreportcard.com/report/github.com/SUNET/g119612)
 ![coverage](https://raw.githubusercontent.com/SUNET/g119612/badges/.badges/main/coverage.svg)
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
