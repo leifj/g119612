@@ -127,7 +127,7 @@ func TestCertPool(t *testing.T) {
 
 func TestPolicy(t *testing.T) {
 	p := etsi119612.NewTSPServicePolicy()
-	assert.True(t, slices.ContainsFunc(p.ServiceStatus, func(s string) bool { return s == "https://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted/" }))
+	assert.True(t, slices.ContainsFunc(p.ServiceStatus, func(s string) bool { return s == etsi119612.ServiceStatusGranted }))
 	assert.Equal(t, len(p.ServiceStatus), 1)
 	p.AddServiceTypeIdentifier("urn:foo")
 	assert.True(t, slices.ContainsFunc(p.ServiceTypeIdentifier, func(s string) bool { return s == "urn:foo" }))

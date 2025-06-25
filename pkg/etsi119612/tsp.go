@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+const ServiceStatusGranted string = "https://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted/"
+
 type TSPServicePolicy struct {
 	ServiceTypeIdentifier []string
 	ServiceStatus         []string
@@ -21,7 +23,7 @@ func (tc *TSPServicePolicy) AddServiceStatus(status string) {
 
 func NewTSPServicePolicy() *TSPServicePolicy {
 	tc := TSPServicePolicy{ServiceTypeIdentifier: make([]string, 0), ServiceStatus: make([]string, 0)}
-	tc.AddServiceStatus("https://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted/")
+	tc.AddServiceStatus(ServiceStatusGranted)
 	return &tc
 }
 
