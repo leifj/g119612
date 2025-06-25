@@ -1,9 +1,9 @@
 
-## This is a golang wrapper for ETSI trust status lists (aka ETSI 119 612 v2)
+![coverage](https://raw.githubusercontent.com/SUNET/g119612/badges/.badges/main/coverage.svg)
 
-If you want to "make gen" to re-generate the golang from the etsi XSD then you must install https://github.com/xuri/xgen first. Note that the generated code is post-processed (sed) to fix a couple of "features" in xgen that I am too lazy to pursue as bugs in xgen at this point. This stuff may change so run "make gen" at your own peril. The generated code that is known to work is commited into the repo for this reason - ymmw.
+## ETSI trust status lists (aka ETSI 119 612 v2)
 
-If you want to "make gen" to re-generate the golang from the etsi XSD then you must install https://github.com/xuri/xgen first
+This is a golang library implementing ETSI trust status lists. The library is meant to be used primarily to create a certificate pool for validating X509 certificates.
 
 ## Trust List in Infrastructure: General Overview:
 
@@ -36,3 +36,8 @@ flowchart TD
     classDef key fill:#ecfccb,stroke:#65a30d,color:#365314
     linkStyle 1 stroke:#000000
 ```
+
+## Contributing
+
+If you want to "make gen" to re-generate the golang from the etsi XSD then you must install https://github.com/xuri/xgen first. Note that the generated code is post-processed (sed) to fix a couple of "features" in xgen that I am too lazy to pursue as bugs in xgen at this point. This stuff may change so run "make gen" at your own peril. The generated code that is known to work is commited into the repo for this reason - ymmw.
+
