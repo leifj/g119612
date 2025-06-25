@@ -1,5 +1,6 @@
 
 ![coverage](https://raw.githubusercontent.com/SUNET/g119612/badges/.badges/main/coverage.svg)
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 # golang ETSI trust status lists (aka ETSI 119 612 v2)
 
