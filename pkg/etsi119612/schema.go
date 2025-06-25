@@ -1,5 +1,6 @@
 package etsi119612
 
+// some stuff needed by xgen
 type SignaturePolicyImplied AnyType
 type AllSignedDataObjects AnyType
 type Lang string

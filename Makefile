@@ -2,6 +2,16 @@ MODULE = $(shell go list -m)
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null || echo "1.0.0")
 PACKAGES := $(shell go list ./... | grep -v /vendor/)
 LDFLAGS := -ldflags "-X main.Version=${VERSION}"
+GOBIN ?= $$(go env GOPATH)/bin
+
+.PHONY: install-go-test-coverage
+install-go-test-coverage:
+	go install github.com/vladopajic/go-test-coverage/v2@latest
+
+.PHONY: check-coverage ## check test coverage and generate report
+check-coverage: install-go-test-coverage ## generate coverage report
+	go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
+	${GOBIN}/go-test-coverage --config=./.testcoverage.yml
 
 .PHONY: default
 default: build
