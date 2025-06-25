@@ -15,5 +15,6 @@ jobs:
     - run: make test
     - uses: vladopajic/go-test-coverage@v2
       with:
+        debug: true
         config: ./.testcoverage.yml
         source-dir: ./pkg/etsi119612
