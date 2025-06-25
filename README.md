@@ -1,6 +1,5 @@
 
-<!---go-badges-version-->
-<!---go-badges-report-card-->
+[![Go Report Card](https://goreportcard.com/badge/github.com/leifj/g119612)](https://goreportcard.com/report/github.com/leifj/g119612)
 ![coverage](https://raw.githubusercontent.com/SUNET/g119612/badges/.badges/main/coverage.svg)
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 

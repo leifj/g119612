@@ -1,8 +1,6 @@
 on: [push, pull_request]
 name: Test
 permissions: write-all
-env:
-  INPUT_README-PATH: /README.md
 jobs:
   test:
     strategy:
@@ -26,8 +24,3 @@ jobs:
         config: ./.testcoverage.yml
         git-token: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
         git-branch: badges
-    - name: more badges
-      uses: jacobkring/go-badges@v1.10.4
-      with:
-        version: ${{ steps.version.outputs.tag }}
-        report-card: ${{ steps.goreportcard.outputs.reportCard }}
