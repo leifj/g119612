@@ -1,5 +1,5 @@
 //The etsi119612 package implements ETSI 119 612 trust status list. The package is
-//primarily meant to be used to create a CertPool for [crypto/x509] Certificate 
+//primarily meant to be used to create a CertPool for [crypto/x509] Certificate
 //validation. The package provides some small number of utilities for introspecting
 //trust status lists.
 

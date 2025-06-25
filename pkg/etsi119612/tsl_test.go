@@ -4,8 +4,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/h2non/gock"
 	"github.com/SUNET/g119612/pkg/etsi119612"
+	"github.com/h2non/gock"
 	"github.com/stretchr/testify/assert"
 )
 
