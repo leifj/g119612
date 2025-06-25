@@ -22,3 +22,5 @@ jobs:
       with:
         debug: true
         config: ./.testcoverage.yml
+        git-token: ${{ github.ref_name == 'main' && secrets.GITHUB_TOKEN || '' }}
+        git-branch: badges

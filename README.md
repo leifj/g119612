@@ -1,9 +1,9 @@
 
 ![coverage](https://raw.githubusercontent.com/SUNET/g119612/badges/.badges/main/coverage.svg)
 
-## ETSI trust status lists (aka ETSI 119 612 v2)
+# golang ETSI trust status lists (aka ETSI 119 612 v2)
 
-This is a golang library implementing ETSI trust status lists. The library is meant to be used primarily to create a certificate pool for validating X509 certificates.
+This is a golang library implementing ETSI trust status lists. The library is meant to be used primarily to create a certificate pool for validating X509 certificates. The library was created to cater to the evolving EUDI wallet ecosystem but other uses are possible. Feel free to drop a PR or an issue if you see something you would like to change.
 
 ## Trust List in Infrastructure: General Overview:
 
