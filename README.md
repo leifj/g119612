@@ -9,6 +9,8 @@ This is a golang library implementing ETSI trust status lists. The library is me
 
 ## Basic Usage
 
+The example below assumes you have imported the crypto/x509 and etsi119612 module (the latter from this package).
+
 First step: fetch and create a TSL object
 ```go
     tsl, err := etsi119612.FetchTSL("https://example.com/some-tsl.xml")
