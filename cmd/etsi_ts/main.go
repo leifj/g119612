@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/x509"
+	"encoding/base64"
 	"flag"
 	"fmt"
 
@@ -10,11 +12,11 @@ import (
 var Version = "1.0.0"
 
 var urlVar = ""
-var skiVar = ""
+var x5cVar = ""
 
 func config() {
-	flag.StringVar(&urlVar, "url", "", "The URL of the trust status list")
-	flag.StringVar(&skiVar, "ski", "", "The public subject key identifier to look for")
+	flag.StringVar(&urlVar, "url", "", "URL of a trust status list")
+	flag.StringVar(&x5cVar, "x5c", "", "base64 encoded certificate (single line)")
 }
 
 func main() {
@@ -24,10 +26,26 @@ func main() {
 
 	tsl, err := etsi119612.FetchTSL(urlVar)
 	if err != nil {
-		fmt.Printf("error: %v", err)
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+
+	data, err := base64.StdEncoding.DecodeString(x5cVar)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	cert, err := x509.ParseCertificate(data)
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
 		return
 	}
 
 	pool := tsl.ToCertPool(etsi119612.PolicyAll)
-	fmt.Printf("pool %+v", pool)
+	_, err = cert.Verify(x509.VerifyOptions{Roots: pool})
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+		return
+	}
+	fmt.Print("OK!\n")
 }
