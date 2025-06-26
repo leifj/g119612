@@ -21,10 +21,13 @@ type TSL struct {
 	Source     string
 }
 
-func StreamToByte(stream io.Reader) []byte {
+func StreamToByte(stream io.Reader) ([]byte, error) {
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(stream)
-	return buf.Bytes()
+	_, err := buf.ReadFrom(stream)
+	if err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
@@ -35,7 +38,12 @@ func FetchTSL(url string) (*TSL, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	bodyBytes := StreamToByte(resp.Body)
+
+	bodyBytes, err := StreamToByte(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
 	t := TSL{Source: url, StatusList: TrustStatusListType{}}
 	log.Printf("Fetched %d bytes\n", len(bodyBytes))
 

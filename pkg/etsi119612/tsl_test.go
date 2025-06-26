@@ -23,7 +23,6 @@ func TestFetch(t *testing.T) {
 	si := tsl.StatusList.TslSchemeInformation
 	assert.NotNil(t, si)
 	assert.Equal(t, si.TSLSequenceNumber, 1)
-	assert.Equal(t, si.TSLSequenceNumber, 1)
 	assert.Equal(t, *si.TslSchemeOperatorName.Name[0].XmlLangAttr, etsi119612.Lang("en"))
 	assert.Equal(t, etsi119612.FindByLanguage(si.TslSchemeOperatorName, "en", "unknown"), "EWC Consortium")
 	assert.Equal(t, etsi119612.FindByLanguage(si.TslSchemeOperatorName, "fr", "unknown 4711"), "unknown 4711")
