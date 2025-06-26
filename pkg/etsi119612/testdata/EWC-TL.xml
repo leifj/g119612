@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TrustServiceStatusList xmlns="http://uri.etsi.org/02231/v2#" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#" xmlns:ns3="http://uri.etsi.org/01903/v1.3.2#" xmlns:ns4="http://uri.etsi.org/02231/v2/additionaltypes#" xmlns:ns5="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#" xmlns:ns6="http://uri.etsi.org/01903/v1.4.1#" TSLTag="https://uri.etsi.org/19612/TSLTag/">
+<TrustServiceStatusList xmlns="http://uri.etsi.org/02231/v2#"
+    xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:ns3="http://uri.etsi.org/01903/v1.3.2#"
+    xmlns:ns4="http://uri.etsi.org/02231/v2/additionaltypes#"
+    xmlns:ns5="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#"
+    xmlns:ns6="http://uri.etsi.org/01903/v1.4.1#" TSLTag="https://uri.etsi.org/19612/TSLTag/">
     <SchemeInformation>
         <TSLVersionIdentifier>5</TSLVersionIdentifier>
         <TSLSequenceNumber>1</TSLSequenceNumber>
@@ -909,8 +914,12 @@
         </TrustServiceProvider>
         <TrustServiceProvider>
             <TSPInformation>
-                <TSPName><Name xml:lang="en">Digital and Population Data Services Agency (DVV)</Name></TSPName>
-                <TSPTradeName><Name xml:lang="en">Digital and Population Data Services Agency (DVV)</Name></TSPTradeName>
+                <TSPName>
+                    <Name xml:lang="en">Digital and Population Data Services Agency (DVV)</Name>
+                </TSPName>
+                <TSPTradeName>
+                    <Name xml:lang="en">Digital and Population Data Services Agency (DVV)</Name>
+                </TSPTradeName>
                 <TSPAddress>
                     <PostalAddresses>
                         <PostalAddress xml:lang="en">
@@ -932,7 +941,9 @@
                 <TSPService>
                     <ServiceInformation>
                         <ServiceTypeIdentifier>https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/NPWP</ServiceTypeIdentifier>
-                        <ServiceName><Name xml:lang="en">EUDI Wallet Demo</Name></ServiceName>
+                        <ServiceName>
+                            <Name xml:lang="en">EUDI Wallet Demo</Name>
+                        </ServiceName>
                         <ServiceDigitalIdentity>
                             <DigitalId>
                                 <X509SubjectName>Public Key</X509SubjectName>
@@ -952,8 +963,12 @@
         </TrustServiceProvider>
         <TrustServiceProvider>
             <TSPInformation>
-                <TSPName><Name xml:lang="en">IDunion</Name></TSPName>
-                <TSPTradeName><Name xml:lang="en">IDunion SCE</Name></TSPTradeName>
+                <TSPName>
+                    <Name xml:lang="en">IDunion</Name>
+                </TSPName>
+                <TSPTradeName>
+                    <Name xml:lang="en">IDunion SCE</Name>
+                </TSPTradeName>
                 <TSPAddress>
                     <PostalAddresses>
                         <PostalAddress xml:lang="en">
@@ -975,7 +990,9 @@
                 <TSPService>
                     <ServiceInformation>
                         <ServiceTypeIdentifier>https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/EAA</ServiceTypeIdentifier>
-                        <ServiceName><Name xml:lang="en">IDunion EAA Issuer</Name></ServiceName>
+                        <ServiceName>
+                            <Name xml:lang="en">IDunion EAA Issuer</Name>
+                        </ServiceName>
                         <ServiceDigitalIdentity>
                             <DigitalId>
                                 <X509SubjectName>Public Key</X509SubjectName>

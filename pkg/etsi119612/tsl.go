@@ -12,6 +12,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 // A representation of an ETSI 119 612 trust status list. The main struct type StatusList
@@ -30,6 +31,17 @@ func StreamToByte(stream io.Reader) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// clean up spaces 
+func (tsl *TSL) CleanCerts() {
+	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
+		if svc.TslServiceInformation != nil && svc.TslServiceInformation.TslServiceDigitalIdentity != nil {
+			for i := range svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId {
+				cert := svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId[i].X509Certificate
+				svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId[i].X509Certificate = strings.TrimSpace(cert)
+			}
+		}
+	})
+}
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
 // into the object structure.
 func FetchTSL(url string) (*TSL, error) {
@@ -51,6 +63,8 @@ func FetchTSL(url string) (*TSL, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	t.CleanCerts()
 
 	return &t, nil
 }
