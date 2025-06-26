@@ -40,7 +40,7 @@ Finally: validate some cert
     }
 ```
 
-## Trust List in Infrastructure: General Overview:
+## Trust List in the EUDI Infrastructure - General Overview:
 
 Document for the reference:
 https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc012-trust-mechanism.md#433-relying-parties
