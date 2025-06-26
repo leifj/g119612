@@ -47,14 +47,14 @@ func FetchTSL(url string) (*TSL, error) {
 	return &t, nil
 }
 
-// Walk a TSL, calling cb once for each TrustServiceProvider found
-func (tsl *TSL) withTrustServices(cb func(*TSPServiceType)) {
+// Walk a TSL, calling cb once for each TrustService found. The TrustServiceProvider is provided as a first
+// argument to the callback
+func (tsl *TSL) withTrustServices(cb func(*TSPType, *TSPServiceType)) {
 	for _, tsp := range tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider {
 		if tsp != nil {
-			log.Printf("TSP: %+v\n", *tsp.TslTSPInformation.TSPName.Name[0].NonEmptyNormalizedString)
 			for _, svc := range tsp.TslTSPServices.TslTSPService {
 				log.Printf("SVC: %+v\n", *svc.TslServiceInformation.ServiceName.Name[0].NonEmptyNormalizedString)
-				cb(svc)
+				cb(tsp, svc)
 			}
 		}
 	}
@@ -63,10 +63,10 @@ func (tsl *TSL) withTrustServices(cb func(*TSPServiceType)) {
 // Generate a [crypto/xml.CertPool] object from the TSL.
 func (tsl *TSL) ToCertPool(policy *TSPServicePolicy) *x509.CertPool {
 	pool := x509.NewCertPool()
-	tsl.withTrustServices(func(svc *TSPServiceType) {
+	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
 		svc.withCertificates(func(cert *x509.Certificate) {
 			pool.AddCertWithConstraint(cert, func(chain []*x509.Certificate) error {
-				return svc.Validate(chain, policy)
+				return tsp.Validate(svc, chain, policy)
 			})
 		})
 	})
