@@ -12,6 +12,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 // A representation of an ETSI 119 612 trust status list. The main struct type StatusList
@@ -30,6 +31,17 @@ func StreamToByte(stream io.Reader) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
+// clean up spaces 
+func (tsl *TSL) CleanCerts() {
+	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
+		if svc.TslServiceInformation != nil && svc.TslServiceInformation.TslServiceDigitalIdentity != nil {
+			for i := range svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId {
+				cert := svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId[i].X509Certificate
+				svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId[i].X509Certificate = strings.TrimSpace(cert)
+			}
+		}
+	})
+}
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
 // into the object structure.
 func FetchTSL(url string) (*TSL, error) {
@@ -52,6 +64,8 @@ func FetchTSL(url string) (*TSL, error) {
 		return nil, err
 	}
 
+	t.CleanCerts()
+
 	return &t, nil
 }
 
@@ -61,7 +75,6 @@ func (tsl *TSL) withTrustServices(cb func(*TSPType, *TSPServiceType)) {
 	for _, tsp := range tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider {
 		if tsp != nil {
 			for _, svc := range tsp.TslTSPServices.TslTSPService {
-				log.Printf("SVC: %+v\n", *svc.TslServiceInformation.ServiceName.Name[0].NonEmptyNormalizedString)
 				cb(tsp, svc)
 			}
 		}
@@ -70,6 +83,14 @@ func (tsl *TSL) withTrustServices(cb func(*TSPType, *TSPServiceType)) {
 
 // Generate a [crypto/xml.CertPool] object from the TSL.
 func (tsl *TSL) ToCertPool(policy *TSPServicePolicy) *x509.CertPool {
+	policy = &TSPServicePolicy{
+	ServiceTypeIdentifier: []string{
+		"http://uri.etsi.org/TrstSvc/Svctype/CA/QC",
+	},
+	ServiceStatus: []string{
+		"http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted",
+	},
+}
 	pool := x509.NewCertPool()
 	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
 		svc.withCertificates(func(cert *x509.Certificate) {
