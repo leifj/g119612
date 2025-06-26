@@ -46,3 +46,23 @@ gen: ## generate code from xsd
 	sed -i 's/*NonEmptyNormalizedString/*NonEmptyNormalizedString `xml:",chardata"`/g' pkg/etsi119612/*.xsd.go
 	sed -i 's/*NonEmptyString/*NonEmptyString `xml:",chardata"`/g' pkg/etsi119612/*.xsd.go
 
+gosec:
+	$(info Run gosec)
+	# G107 is excluded because where http.Get(url) is used the url can't be a constant.
+	gosec -exclude=G107 -color -nosec -tests ./...
+
+staticcheck:
+	$(info Run staticcheck)
+	staticcheck ./...
+
+
+vscode:
+	$(info Install APT packages)
+	sudo apt-get update && sudo apt-get install -y \
+		protobuf-compiler \
+		netcat-openbsd
+	$(info Install go packages)
+	go install golang.org/x/tools/cmd/deadcode@latest && \
+	go install github.com/securego/gosec/v2/cmd/gosec@latest && \
+	go install honnef.co/go/tools/cmd/staticcheck@latest
+	go install github.com/xuri/xgen/cmd/xgen@latest

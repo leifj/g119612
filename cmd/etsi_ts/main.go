@@ -11,18 +11,22 @@ import (
 
 var Version = "1.0.0"
 
-var urlVar = ""
-var x5cVar = ""
+var (
+	urlVar = ""
+	x5cVar = ""
+)
 
-func config() {
+func init() {
 	flag.StringVar(&urlVar, "url", "", "URL of a trust status list")
 	flag.StringVar(&x5cVar, "x5c", "", "base64 encoded certificate (single line)")
 }
 
 func main() {
-
-	config()
 	flag.Parse()
+
+	if urlVar == "" || x5cVar == "" {
+		flag.PrintDefaults()
+	}
 
 	tsl, err := etsi119612.FetchTSL(urlVar)
 	if err != nil {
