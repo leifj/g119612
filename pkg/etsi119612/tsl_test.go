@@ -44,6 +44,18 @@ func TestFetchSigned(t *testing.T) {
 	assert.IsType(t, x509.Certificate{}, tsl.Signer)
 }
 
+func TestFetchSignedBroken(t *testing.T) {
+	defer gock.Off()
+	gock.New("https://trustedlist.pts.se").
+		Get("/SE-TL.xml").
+		Reply(200).
+		File("./testdata/SE-TL-bad-sig.xml")
+
+	tsl, err := etsi119612.FetchTSL("https://trustedlist.pts.se/SE-TL.xml")
+	assert.Error(t, err)
+	assert.Nil(t, tsl)
+}
+
 func TestFetchMissingSchemeInfo(t *testing.T) {
 	defer gock.Off()
 	gock.New("https://ewc-consortium.github.io").

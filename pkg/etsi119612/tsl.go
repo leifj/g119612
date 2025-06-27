@@ -25,15 +25,6 @@ type TSL struct {
 	Signer     x509.Certificate
 }
 
-func StreamToByte(stream io.Reader) ([]byte, error) {
-	buf := new(bytes.Buffer)
-	_, err := buf.ReadFrom(stream)
-	if err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
 // into the object structure.
 func FetchTSL(url string) (*TSL, error) {
@@ -43,12 +34,12 @@ func FetchTSL(url string) (*TSL, error) {
 	}
 	defer resp.Body.Close()
 
-	bodyBytes, err := StreamToByte(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 	t := TSL{Source: url, StatusList: TrustStatusListType{}}
-	log.Printf("g119612: Fetched %d bytes\n", len(bodyBytes))
+	log.Printf("g119612: Fetched %d bytes from %s\n", len(bodyBytes), url)
 
 	if bytes.Contains(bodyBytes, []byte("Signature>")) {
 		t.Signed = true
@@ -61,10 +52,10 @@ func FetchTSL(url string) (*TSL, error) {
 				bodyBytes = []byte(xml[0])
 				t.Signer = validator.SigningCert()
 			} else {
-				log.Printf("g119612: Failed to validate any references: %v\n", err)
+				return nil, err
 			}
 		} else {
-			log.Printf("g119612: The xml appears signed but failed to create validator: %v\n", err)
+			return nil, err
 		}
 	}
 
