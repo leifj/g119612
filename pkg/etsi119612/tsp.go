@@ -52,13 +52,12 @@ func (svc *TSPServiceType) withCertificates(cb func(*x509.Certificate)) {
 				if err == nil {
 					cert, err := x509.ParseCertificate(data)
 					if err == nil {
-						log.Printf("[TSP %s] Parsing certificate\n", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"))
 						cb(cert)
 					} else {
-						log.Printf("[TSP: %s] Error parsing certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+						log.Printf("g119612: [TSP: %s] Error parsing certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
 					}
 				} else {
-					log.Printf("[TSP: %s] Error decoding certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+					log.Printf("g119612: [TSP: %s] Error decoding certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
 				}
 			}
 		}

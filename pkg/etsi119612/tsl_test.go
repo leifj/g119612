@@ -1,6 +1,7 @@
 package etsi119612_test
 
 import (
+	"crypto/x509"
 	"slices"
 	"testing"
 
@@ -18,7 +19,7 @@ func TestFetch(t *testing.T) {
 
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
 	assert.NotNil(t, tsl)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	assert.NotNil(t, tsl.StatusList)
 	si := tsl.StatusList.TslSchemeInformation
 	assert.NotNil(t, si)
@@ -26,6 +27,21 @@ func TestFetch(t *testing.T) {
 	assert.Equal(t, *si.TslSchemeOperatorName.Name[0].XmlLangAttr, etsi119612.Lang("en"))
 	assert.Equal(t, etsi119612.FindByLanguage(si.TslSchemeOperatorName, "en", "unknown"), "EWC Consortium")
 	assert.Equal(t, etsi119612.FindByLanguage(si.TslSchemeOperatorName, "fr", "unknown 4711"), "unknown 4711")
+}
+
+func TestFetchSigned(t *testing.T) {
+	defer gock.Off()
+	gock.New("https://trustedlist.pts.se").
+		Get("/SE-TL.xml").
+		Reply(200).
+		File("./testdata/SE-TL.xml")
+
+	tsl, err := etsi119612.FetchTSL("https://trustedlist.pts.se/SE-TL.xml")
+	assert.NoError(t, err)
+	assert.NotNil(t, tsl)
+	assert.True(t, tsl.Signed)
+	assert.NotNil(t, tsl.Signer)
+	assert.IsType(t, x509.Certificate{}, tsl.Signer)
 }
 
 func TestFetchMissingSchemeInfo(t *testing.T) {
@@ -37,7 +53,7 @@ func TestFetchMissingSchemeInfo(t *testing.T) {
 
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
 	assert.NotNil(t, tsl)
-	assert.Nil(t, err)
+	assert.NoError(t, err)
 	si := tsl.StatusList.TslSchemeInformation
 	assert.Nil(t, si)
 }
@@ -51,7 +67,7 @@ func TestFetchBrokenXML(t *testing.T) {
 
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
 	assert.Nil(t, tsl)
-	assert.NotNil(t, err)
+	assert.Error(t, err)
 }
 
 func TestFetchMissing(t *testing.T) {

@@ -12,6 +12,8 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/moov-io/signedxml"
 )
 
 // A representation of an ETSI 119 612 trust status list. The main struct type StatusList
@@ -19,6 +21,8 @@ import (
 type TSL struct {
 	StatusList TrustStatusListType `xml:"tsl:TrustServiceStatusList"`
 	Source     string
+	Signed     bool
+	Signer     x509.Certificate
 }
 
 func StreamToByte(stream io.Reader) ([]byte, error) {
@@ -43,9 +47,26 @@ func FetchTSL(url string) (*TSL, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	t := TSL{Source: url, StatusList: TrustStatusListType{}}
-	log.Printf("Fetched %d bytes\n", len(bodyBytes))
+	log.Printf("g119612: Fetched %d bytes\n", len(bodyBytes))
+
+	if bytes.Contains(bodyBytes, []byte("Signature>")) {
+		t.Signed = true
+		// lets try to validate a signature if we can
+		validator, err := signedxml.NewValidator(string(bodyBytes))
+		if err == nil {
+			validator.SetReferenceIDAttribute("Id")
+			xml, err := validator.ValidateReferences()
+			if err == nil {
+				bodyBytes = []byte(xml[0])
+				t.Signer = validator.SigningCert()
+			} else {
+				log.Printf("g119612: Failed to validate any references: %v\n", err)
+			}
+		} else {
+			log.Printf("g119612: The xml appears signed but failed to create validator: %v\n", err)
+		}
+	}
 
 	err = xml.Unmarshal(bodyBytes, &t.StatusList)
 	if err != nil {
@@ -61,7 +82,6 @@ func (tsl *TSL) withTrustServices(cb func(*TSPType, *TSPServiceType)) {
 	for _, tsp := range tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider {
 		if tsp != nil {
 			for _, svc := range tsp.TslTSPServices.TslTSPService {
-				log.Printf("SVC: %+v\n", *svc.TslServiceInformation.ServiceName.Name[0].NonEmptyNormalizedString)
 				cb(tsp, svc)
 			}
 		}
