@@ -2,13 +2,6 @@
 
 package etsi119612
 
-// Any ...
-type Any *AnyType
-
-// AnyType ...
-type AnyType struct {
-}
-
 // ObjectIdentifier ...
 type ObjectIdentifier *ObjectIdentifierType
 
@@ -21,12 +14,9 @@ type ObjectIdentifierType struct {
 
 // IdentifierType ...
 type IdentifierType struct {
-	QualifierAttr string `xml:"Qualifier,attr,omitempty"`
-	Value         string `xml:",chardata"`
+	QualifierAttr *QualifierType `xml:"Qualifier,attr,omitempty"`
+	Value         string         `xml:",chardata"`
 }
-
-// QualifierType ...
-type QualifierType string
 
 // DocumentationReferencesType ...
 type DocumentationReferencesType struct {

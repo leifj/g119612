@@ -31,6 +31,11 @@ type QualifiersType struct {
 	Qualifier *QualifierType `xml:"Qualifier"`
 }
 
+// QualifierType ...
+type QualifierType struct {
+	UriAttr string `xml:"uri,attr,omitempty"`
+}
+
 // PoliciesListType ...
 type PoliciesListType struct {
 	PolicyIdentifier *ObjectIdentifierType `xml:"PolicyIdentifier"`

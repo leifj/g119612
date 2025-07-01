@@ -60,6 +60,10 @@ type ElectronicAddressType struct {
 	URI []*NonEmptyMultiLangURIType `xml:"URI"`
 }
 
+// AnyType ...
+type AnyType struct {
+}
+
 // Extension ...
 type Extension *ExtensionType
 

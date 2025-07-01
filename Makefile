@@ -40,7 +40,7 @@ realclean: ## remove generated files - requires "make gen"
 # horrid
 .PHONY: gen
 gen: ## generate code from xsd
-	xgen -i xsd -o pkg/etsi119612 -l Go -p etsi119612
+	xgen -i xsd2024 -o pkg/etsi119612 -l Go -p etsi119612
 	sed -i 's/xml:lang/lang/g' pkg/etsi119612/*.xsd.go
 	sed -i 's/tsl://g' pkg/etsi119612/*.xsd.go
 	sed -i 's/*NonEmptyNormalizedString/*NonEmptyNormalizedString `xml:",chardata"`/g' pkg/etsi119612/*.xsd.go
