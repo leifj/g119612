@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/SUNET/g119612/pkg/etsi119612"
 )
@@ -21,35 +22,73 @@ func init() {
 	flag.StringVar(&x5cVar, "x5c", "", "base64 encoded certificate (single line)")
 }
 
+func Usage(cmd string) {
+	fmt.Printf(`
+Usage: %s
+	show --url <url>
+	validate --url <url> --x5c <base64 encoded certificate>
+
+`, cmd)
+}
+
 func main() {
-	flag.Parse()
+	validateCmd := flag.NewFlagSet("validate", flag.ExitOnError)
+	validateUrl := validateCmd.String("url", "", "source url")
+	validateX5C := validateCmd.String("x5c", "", "base64 encoded certificate")
 
-	if urlVar == "" || x5cVar == "" {
-		flag.PrintDefaults()
-	}
+	showCmd := flag.NewFlagSet("show", flag.ExitOnError)
+	showUrl := showCmd.String("url", "", "source url")
 
-	tsl, err := etsi119612.FetchTSL(urlVar)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
-	}
-
-	data, err := base64.StdEncoding.DecodeString(x5cVar)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
-	}
-	cert, err := x509.ParseCertificate(data)
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
+	if len(os.Args) < 2 {
+		Usage(os.Args[0])
+		os.Exit(1)
 	}
 
-	pool := tsl.ToCertPool(etsi119612.PolicyAll)
-	_, err = cert.Verify(x509.VerifyOptions{Roots: pool})
-	if err != nil {
-		fmt.Printf("error: %v\n", err)
-		return
+	switch os.Args[1] {
+	case "validate":
+		validateCmd.Parse(os.Args[2:])
+		tsl, err := etsi119612.FetchTSL(*validateUrl)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+
+		data, err := base64.StdEncoding.DecodeString(*validateX5C)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+		cert, err := x509.ParseCertificate(data)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+
+		pool := tsl.ToCertPool(etsi119612.PolicyAll)
+		_, err = cert.Verify(x509.VerifyOptions{Roots: pool})
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+		fmt.Print("OK!\n")
+	case "show":
+		showCmd.Parse(os.Args[2:])
+		tsl, err := etsi119612.FetchTSL(*showUrl)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+			return
+		}
+		fmt.Printf("%s\n", tsl)
+		for _, tsp := range tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider {
+			name_en := etsi119612.FindByLanguage(tsp.TslTSPInformation.TSPName, "en", "Unknown tsp")
+			s_count := len(tsp.TslTSPServices.TslTSPService)
+			plural := ""
+			if s_count > 1 {
+				plural = "s"
+			}
+
+			fmt.Printf("  - \"%s\" (%d service%s)\n", name_en, s_count, plural)
+		}
 	}
-	fmt.Print("OK!\n")
+
 }

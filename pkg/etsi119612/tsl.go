@@ -27,6 +27,18 @@ type TSL struct {
 	Signer     x509.Certificate
 }
 
+func (tsl *TSL) NumberOfTrustServiceProviders() int {
+	return len(tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider)
+}
+
+func (tsl *TSL) SchemeOperatorName() string {
+	return FindByLanguage(tsl.StatusList.TslSchemeInformation.TslSchemeOperatorName, "en", "Unknown scheme operator")
+}
+
+func (tsl *TSL) String() string {
+	return fmt.Sprintf("TSL[Source: %s] by %s with %d trust service providers", tsl.Source, tsl.SchemeOperatorName(), tsl.NumberOfTrustServiceProviders())
+}
+
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
 // into the object structure.
 func FetchTSL(url string) (*TSL, error) {
