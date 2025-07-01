@@ -9,9 +9,11 @@ import (
 	"bytes"
 	"crypto/x509"
 	"encoding/xml"
+	"fmt"
 	"io"
-	"log"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/moov-io/signedxml"
 )
@@ -39,7 +41,7 @@ func FetchTSL(url string) (*TSL, error) {
 		return nil, err
 	}
 	t := TSL{Source: url, StatusList: TrustStatusListType{}}
-	log.Printf("g119612: Fetched %d bytes from %s\n", len(bodyBytes), url)
+	log.Debugf("g119612: Fetched %d bytes from %s\n", len(bodyBytes), url)
 
 	if bytes.Contains(bodyBytes, []byte("Signature>")) {
 		t.Signed = true

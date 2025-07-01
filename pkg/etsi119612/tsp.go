@@ -3,8 +3,9 @@ package etsi119612
 import (
 	"crypto/x509"
 	"encoding/base64"
-	"log"
 	"slices"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const ServiceStatusGranted string = "https://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted/"
@@ -54,10 +55,10 @@ func (svc *TSPServiceType) withCertificates(cb func(*x509.Certificate)) {
 					if err == nil {
 						cb(cert)
 					} else {
-						log.Printf("g119612: [TSP: %s] Error parsing certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+						log.Errorf("g119612: [TSP: %s] Error parsing certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
 					}
 				} else {
-					log.Printf("g119612: [TSP: %s] Error decoding certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
+					log.Errorf("g119612: [TSP: %s] Error decoding certificate: %s", FindByLanguage(svc.TslServiceInformation.ServiceName, "en", "Unknown"), err)
 				}
 			}
 		}
