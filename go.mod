@@ -19,3 +19,5 @@ require (
 	github.com/russellhaering/goxmldsig v1.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/moov-io/signedxml v1.2.3 => github.com/leifj/signedxml v1.2.3-leifj2
