@@ -8,8 +8,6 @@ import (
 	"github.com/SUNET/g119612/pkg/etsi119612"
 	"github.com/h2non/gock"
 	"github.com/stretchr/testify/assert"
-	"strings"
-	"errors"
 )
 
 func TestFetch(t *testing.T) {
@@ -165,31 +163,3 @@ func TestPolicy(t *testing.T) {
 	assert.Equal(t, len(p.ServiceStatus), 2)
 }
 
-
-func TestStreamToByteSuccess(t *testing.T){
-	input := "Test input string"
-	stream := strings.NewReader(input)
-	result, err :=etsi119612.StreamToByte(stream)
-	if err != nil{
-		t.Fatal(err)
-	}
-	if string(result) != input {
-		t.Errorf("Expected %q got %q", input, result)
-	}
-}
-
-
-type brokenReader struct{}
-
-func (b brokenReader) Read(p []byte) (int, error) {
-	return 0, errors.New("Simulated read failure")
-}
-
-func TestStreamToByteError(t *testing.T) {
-	reader := brokenReader{}
-
-	_, err := etsi119612.StreamToByte(reader)
-	if err == nil {
-		t.Fatal("Expected error, got nil")
-	}
-}

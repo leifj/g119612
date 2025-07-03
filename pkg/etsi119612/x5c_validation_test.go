@@ -24,8 +24,6 @@ func TestLeafRootCertVerificationSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed while reading json: %v", err)
 	}
-	assert.NoError(t, err)
-
     assert.NotEmpty(t, header_mock) 
 	var jwt JWTCertBundle
 	err =json.Unmarshal(header_mock, &jwt)
@@ -42,9 +40,6 @@ func TestLeafRootCertVerificationSuccess(t *testing.T) {
 		Reply(200).
 		File("testdata/test-trust-list.xml")
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
-	
-	fmt.Println(tsl)
-
 	policy := *etsi119612.PolicyAll 
 	policy.AddServiceTypeIdentifier("http://uri.etsi.org/TrstSvc/Svctype/CA/QC")
 	pool := tsl.ToCertPool(&policy)
@@ -88,9 +83,6 @@ func TestLeafIntermediateRootCertVerificationSuccess(t *testing.T) {
 		Reply(200).
 		File("testdata/test-trust-list.xml")
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
-	
-	fmt.Println(tsl)
-	
 	policy := *etsi119612.PolicyAll 
 	policy.AddServiceTypeIdentifier("http://uri.etsi.org/TrstSvc/Svctype/CA/QC")
 	fmt.Println("ServiceTypeIdentifier:", policy.ServiceTypeIdentifier)
@@ -128,9 +120,7 @@ func TestLeafRootCertVerificationSuccessEmptyServiceTypeIdentifier(t *testing.T)
     assert.NotEmpty(t, header_mock) 
 	var jwt JWTCertBundle
 	err =json.Unmarshal(header_mock, &jwt)
-	if err !=nil{
-		t.Fatalf("Failed updating jwt bundle")
-	}
+	assert.NoError(t, err, "Failed to unmarshal JWT bundle")
 	assert.NotEmpty(t, jwt)
 	assert.NotEmpty(t, jwt.Alg) 
 	assert.NotEmpty(t, jwt.Typ)
@@ -142,7 +132,6 @@ func TestLeafRootCertVerificationSuccessEmptyServiceTypeIdentifier(t *testing.T)
 		File("testdata/test-trust-list.xml")
 	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
 	
-	fmt.Println(tsl)
 	pool := tsl.ToCertPool(etsi119612.PolicyAll)
 	fmt.Println("Number of trusted roots:", len(pool.Subjects()))
 	fmt.Println(pool)
