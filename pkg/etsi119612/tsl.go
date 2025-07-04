@@ -41,7 +41,7 @@ func (tsl *TSL) String() string {
 }
 
 // clean up spaces 
-func (tsl *TSL) CleanCerts() {
+func (tsl *TSL) cleanCerts() {
 	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
 		if svc.TslServiceInformation != nil && svc.TslServiceInformation.TslServiceDigitalIdentity != nil {
 			for i := range svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId {
@@ -90,7 +90,7 @@ func FetchTSL(url string) (*TSL, error) {
 		return nil, err
 	}
 
-	t.CleanCerts()
+	t.cleanCerts()
 
 	return &t, nil
 }
