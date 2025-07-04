@@ -57,7 +57,7 @@ flowchart TD
     Wallet -- Verifies Verifier --> TL
     Verifier -- Verifies Wallet Unit Attestation --> TL
     TL -. Must Register .-> Issuer & WalletProvider["Wallet Provider"]
-    TL -. "Recommended to be Registered - Section 4.3.3" .-> Verifier
+    TL -. "Recommended to be Registered - Section 4.3.2.2" .-> Verifier
 
      Issuer:::actor
      Credential:::doc

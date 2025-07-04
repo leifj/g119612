@@ -72,7 +72,7 @@ func (tsp *TSPType) Validate(svc *TSPServiceType, chain []*x509.Certificate, pol
 		return ErrInvalidStatus
 	}
 
-	if !slices.Contains(policy.ServiceTypeIdentifier, svc.TslServiceInformation.TslServiceTypeIdentifier) {
+	if len(policy.ServiceTypeIdentifier) > 0 && !slices.Contains(policy.ServiceTypeIdentifier, svc.TslServiceInformation.TslServiceTypeIdentifier) {
 		return ErrInvalidConstraints
 	}
 

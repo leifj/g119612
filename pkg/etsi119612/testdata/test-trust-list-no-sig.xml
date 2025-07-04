@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustServiceStatusList xmlns="http://uri.etsi.org/02231/v2#"
+    xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:ns3="http://uri.etsi.org/01903/v1.3.2#"
+    xmlns:ns4="http://uri.etsi.org/02231/v2/additionaltypes#"
+    xmlns:ns5="http://uri.etsi.org/TrstSvc/SvcInfoExt/eSigDir-1999-93-EC-TrustedList/#"
+    xmlns:ns6="http://uri.etsi.org/01903/v1.4.1#" TSLTag="https://uri.etsi.org/19612/TSLTag/">
+    <TrustServiceProviderList>
+        <TrustServiceProvider>
+            <TSPInformation>
+                <TSPName>
+                    <Name xml:lang="en">Sunet Root CA</Name>
+                </TSPName>
+                <TSPAddress>
+                    <PostalAddresses>
+                        <PostalAddress xml:lang="en">
+                            <StreetAddress>1 Test Street</StreetAddress>
+                            <Locality>Stockholm</Locality>
+                            <CountryName>SE</CountryName>
+                        </PostalAddress>
+                    </PostalAddresses>
+                </TSPAddress>
+            </TSPInformation>
+            <TSPServices>
+                <TSPService>
+                    <ServiceInformation>
+                        <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/CA/QC</ServiceTypeIdentifier>
+                        <ServiceName>
+                            <Name xml:lang="en">Sunet Root Certification Authority</Name>
+                        </ServiceName>
+                        <ServiceDigitalIdentity>
+                            <DigitalId>
+                                <X509Certificate>
+MIIDoTCCAomgAwIBAgIUBZhyzznE716BGU+M90OlqkFM6uwwDQYJKoZIhvcNAQELBQAwWDELMAkGA1UEBhMCU0UxEjAQBgNVBAgMCVN0b2NraG9sbTEOMAwGA1UECgwFU3VuZXQxDTALBgNVBAsMBFJvb3QxFjAUBgNVBAMMDVN1bmV0IFJvb3QgQ0EwHhcNMjUwNjI2MDgzODE1WhcNMzUwNjI0MDgzODE1WjBYMQswCQYDVQQGEwJTRTESMBAGA1UECAwJU3RvY2tob2xtMQ4wDAYDVQQKDAVTdW5ldDENMAsGA1UECwwEUm9vdDEWMBQGA1UEAwwNU3VuZXQgUm9vdCBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKopSb8pP2wSLnkJbgoE4TMqUg9tTJOelN+NeC9dOgxZULc25KrT/zk2pRE+tN1jyun//Cyli7PDjbbN40g6MKMbrvusI18mkW8+X2eumZez2ylVL3gxVW6W1n4MDkKTi5koYf/CHdulzZJqFsC2ImcfI2KPTrUUhg1hBJw6/0DYmxwyywBGLQfvO/Y2Hml1WZT6D2SXMdYdANsUOtv8F8jHiI2Dm90VmPuTc6T7FKdLnzOGry1bzTyv6UmWjsq4hlYcl8lzR9ZUtu3FIyOjvLlwFnWCKV2X5wiECLZfyIe69M7BTWsrFGcxTzdV1HeAYPf67VxKllE79UPbcHPfIPkCAwEAAaNjMGEwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFFn61hNKdpuZ1rkD4YQop03miMdYMB8GA1UdIwQYMBaAFFn61hNKdpuZ1rkD4YQop03miMdYMA0GCSqGSIb3DQEBCwUAA4IBAQAs9pfVYv0UpERlkWwh1gyiaJ7wa6scd8fF2lEhf8ePDmdYLHttN6fri9EmbIwJor8JUhSNiINgq2xL0PuDu1RGQhhrDIFjvPtLQCEOKg19NKoJQP7ihcn0y9UKagsprHbDhem4BjRM8qJSFVysI94XESXW8baYebQqyScWCEY5eNd5Jl0Zmda/czQURWqplCnRVzHi9xTK5pWjIMJ1EMI7xVjkxqo01N1p/kA971GuetLlZzqgvgMOT2GWlaqYj6FmxEdJOLnUInxnx0weidjquGVyeprsjKdt/FMkLqxnQX/kwOiPDU3nBuOq/4l4PWMMMKPTXzjQvbptzllTW+3C
+                                </X509Certificate>
+                            </DigitalId>
+                            <DigitalId>
+                                <X509SubjectName>C=SE, ST=Stockholm, O=Sunet, OU=Root, CN=Sunet Root CA</X509SubjectName>
+                            </DigitalId>
+                            <DigitalId>
+                                <X509SKI>WfrWE0p2m5nWuQPhhCinTeaIx1g=</X509SKI>
+                            </DigitalId>
+                        </ServiceDigitalIdentity>
+                        <ServiceStatus>https://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted/</ServiceStatus>
+                        <StatusStartingTime>2025-01-01T00:00:00Z</StatusStartingTime>
+                    </ServiceInformation>
+                </TSPService>
+            </TSPServices>
+        </TrustServiceProvider>
+    </TrustServiceProviderList>
+</TrustServiceStatusList>
