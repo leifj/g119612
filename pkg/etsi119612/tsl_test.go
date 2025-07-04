@@ -45,6 +45,7 @@ func TestFetchSigned(t *testing.T) {
 }
 
 func TestFetchSignedBroken(t *testing.T) {
+	//calculated digest does not match the expected digest
 	defer gock.Off()
 	gock.New("https://trustedlist.pts.se").
 		Get("/SE-TL.xml").
@@ -163,3 +164,24 @@ func TestPolicy(t *testing.T) {
 	assert.Equal(t, len(p.ServiceStatus), 2)
 }
 
+
+func TestTSLMethods(t *testing.T){
+	defer gock.Off()
+	gock.New("https://ewc-consortium.github.io").
+		Get("/EWC-TL").
+		Reply(200).
+		File("testdata/EWC-TL.xml")
+	tsl, err := etsi119612.FetchTSL("https://ewc-consortium.github.io/ewc-trust-list/EWC-TL")
+	assert.NoError(t,err)
+	if got := tsl.NumberOfTrustServiceProviders(); got != 17 {
+		t.Errorf("expected 17 providers, got %d", got)
+	}
+
+	if name:=tsl.SchemeOperatorName(); name != "EWC Consortium" {
+		t.Errorf("expected 'EWC Consortium', got %q", name)
+	}
+	expectedStr := "TSL[Source: https://ewc-consortium.github.io/ewc-trust-list/EWC-TL] by EWC Consortium with 17 trust service providers"
+	if tsl.String() != expectedStr {
+		t.Errorf("unexpected String output:\ngot:  %q\nwant: %q", tsl.String(), expectedStr)
+	}
+}
