@@ -29,7 +29,11 @@ type TSL struct {
 }
 
 func (tsl *TSL) NumberOfTrustServiceProviders() int {
-	return len(tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider)
+	if tsl.StatusList.TslTrustServiceProviderList !=nil {
+	return len(tsl.StatusList.TslTrustServiceProviderList.TslTrustServiceProvider)} else {
+		fmt.Println("TslTrustServiceProvider is nil")
+		return 0
+	}
 }
 
 func (tsl *TSL) SchemeOperatorName() string {
@@ -42,6 +46,7 @@ func (tsl *TSL) String() string {
 
 // clean up spaces 
 func (tsl *TSL) cleanCerts() {
+	if tsl.StatusList.TslTrustServiceProviderList !=nil {
 	tsl.withTrustServices(func(tsp *TSPType, svc *TSPServiceType) {
 		if svc.TslServiceInformation != nil && svc.TslServiceInformation.TslServiceDigitalIdentity != nil {
 			for i := range svc.TslServiceInformation.TslServiceDigitalIdentity.DigitalId {
@@ -50,6 +55,7 @@ func (tsl *TSL) cleanCerts() {
 			}
 		}
 	})
+}
 }
 // Create a TSL object from a URL. The URL is fetched with [net/http], parsed and unmarshalled
 // into the object structure.
@@ -65,6 +71,7 @@ func FetchTSL(url string) (*TSL, error) {
 		return nil, err
 	}
 	t := TSL{Source: url, StatusList: TrustStatusListType{}}
+
 	log.Debugf("g119612: Fetched %d bytes from %s\n", len(bodyBytes), url)
 
 	if bytes.Contains(bodyBytes, []byte("Signature>")) {
